@@ -104,9 +104,6 @@ class WeatherFragment : Fragment() {
 
         //Glide.with(activity!!).load(prepareIcon(weathers.weather[0].icon)).into(image)
 
-        // Todo find a way to send to sun fragment
-        // won't be nice making another network call from sun fragment
-        // for retrieving sunrise and sunset
         sunriseVal = unixToTime(weathers.sys.sunrise)
         sunsetVal = unixToTime(weathers.sys.sunset)
 
