@@ -20,6 +20,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_weather.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,6 +43,9 @@ class WeatherFragment : Fragment() {
     lateinit var speedUnitGroup: RadioGroup
     lateinit var windSpeed: TextView
     private lateinit var rootView: View
+
+    val df = DecimalFormat("#.#")
+
 
 
     lateinit var apiService: APIService
@@ -115,19 +120,20 @@ class WeatherFragment : Fragment() {
         UiUtils.dismissAllProgressDialogs()
 
         temperatureUnitGroup.setOnCheckedChangeListener { group, _ ->
+            df.roundingMode = RoundingMode.CEILING
             // checkedId is the RadioButton selected
             if(group.checkedRadioButtonId != -1){
                 if(rb_celcius.isChecked){
-                    temperature.text = getTemperatureInCelcius(weathers.main.temp).toString()
+                    temperature.text = df.format(getTemperatureInCelcius(weathers.main.temp)).toString()
                     unitTV.text="oC"
                 }
                 if(rb_fahrenheit.isChecked){
-                    temperature.text =getTemperatureInFahrenheit(weathers.main.temp).toString()
+                    temperature.text =df.format(getTemperatureInFahrenheit(weathers.main.temp)).toString()
                     unitTV.text="oF"
 
                 }
                 if(rb_kelvin.isChecked){
-                    temperature.text = weathers.main.temp.toString()
+                    temperature.text = df.format(weathers.main.temp).toString()
                     unitTV.text="oK"
 
                 }
