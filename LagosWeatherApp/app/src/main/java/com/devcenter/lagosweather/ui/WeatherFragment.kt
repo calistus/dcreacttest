@@ -3,6 +3,7 @@ package com.devcenter.lagosweather.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,8 +47,6 @@ class WeatherFragment : Fragment() {
 
     val df = DecimalFormat("#.#")
 
-
-
     lateinit var apiService: APIService
     lateinit var compositeDisposable: CompositeDisposable
 
@@ -61,7 +60,6 @@ class WeatherFragment : Fragment() {
         initView()
         initAPI()
         fetchData()
-        listenToUnitChange()
 
         return rootView
     }
@@ -107,6 +105,7 @@ class WeatherFragment : Fragment() {
                 weathers.weather[0].description.substring(1)
         windSpeed.text = "Wind Speed: " + weathers.wind.speed.toString() + " m/s"
         temperature.text = getTemperatureInCelcius(weathers.main.temp).toString()
+        unitTV.text = Html.fromHtml("<sup><small>o</small></sup> C")
         date.text = currentDate()
         time.text = getCurrentTime()
 
@@ -125,16 +124,15 @@ class WeatherFragment : Fragment() {
             if(group.checkedRadioButtonId != -1){
                 if(rb_celcius.isChecked){
                     temperature.text = df.format(getTemperatureInCelcius(weathers.main.temp)).toString()
-                    unitTV.text="oC"
+                    unitTV.text = Html.fromHtml("<sup><small>o</small></sup> C")
                 }
                 if(rb_fahrenheit.isChecked){
                     temperature.text =df.format(getTemperatureInFahrenheit(weathers.main.temp)).toString()
-                    unitTV.text="oF"
-
+                    unitTV.text = Html.fromHtml("<sup><small>o</small></sup> F")
                 }
                 if(rb_kelvin.isChecked){
                     temperature.text = df.format(weathers.main.temp).toString()
-                    unitTV.text="oK"
+                    unitTV.text = Html.fromHtml("<sup><small>o</small></sup> k")
 
                 }
             }
@@ -194,23 +192,5 @@ class WeatherFragment : Fragment() {
     private fun prepareIcon(icon: String): String {
         return "http://openweathermap.org/img/w/$icon.png"
     }
-
-    private fun listenToUnitChange() {
-        temperatureUnitGroup.setOnCheckedChangeListener { group, checkedId ->
-            // checkedId is the RadioButton selected
-//            if(group.checkedRadioButtonId != -1){
-//                if(rb_celcius.isChecked){
-//
-//                }
-//                if(rb_fahrenheit.isChecked){
-//
-//                }
-//                if(rb_kelvin.isChecked){
-//
-//                }
-//            }
-        }
-    }
-
 
 }
