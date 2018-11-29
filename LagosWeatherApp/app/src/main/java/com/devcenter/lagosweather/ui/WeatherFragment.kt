@@ -42,11 +42,14 @@ class WeatherFragment : Fragment() {
     lateinit var windSpeed: TextView
     private lateinit var rootView: View
 
-    lateinit var sunsetVal: String
-    lateinit var sunriseVal: String
+
     lateinit var apiService: APIService
     lateinit var compositeDisposable: CompositeDisposable
 
+    companion object {
+        var sunriseVal: String = "06:41"
+        var sunsetVal: String = "18:28"
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_weather, container, false)

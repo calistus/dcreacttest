@@ -36,15 +36,15 @@ class SunFragment : Fragment() {
         currentDate.text = currentDate()
         currentTime.text = getCurrentTime()
 
-        val bundle = this.arguments
+        /*val bundle = this.arguments
 
         if (bundle != null) {
             sunrise.text = bundle.getString("rise")
             sunset.text = bundle.getString("set")
         }
-
-//        sunrise.text = WeatherFragment.sunriseVal
-//        sunset.text = WeatherFragment.sunsetVal
+*/
+        sunrise.text = WeatherFragment.sunriseVal
+        sunset.text = WeatherFragment.sunsetVal
     }
 
     private fun currentDate(): String{
