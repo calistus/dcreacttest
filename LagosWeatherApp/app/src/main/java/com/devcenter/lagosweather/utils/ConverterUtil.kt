@@ -6,7 +6,7 @@ object ConverterUtil {
     }
 
     fun getTemperatureInFahrenheit(temp: Double): Double {
-        return (temp - 457.87)
+        return (temp - 459.67)
     }
 
     fun getSpeedInmph(speed: Double): Double {
