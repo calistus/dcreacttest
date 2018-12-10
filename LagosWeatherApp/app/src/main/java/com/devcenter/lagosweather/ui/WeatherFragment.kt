@@ -16,11 +16,14 @@ import com.devcenter.lagosweather.constants.SecretKeys
 import com.devcenter.lagosweather.model.WeatherModel
 import com.devcenter.lagosweather.retrofit.APIService
 import com.devcenter.lagosweather.retrofit.RetrofitClient
+import com.devcenter.lagosweather.utils.ConverterUtil
+import com.devcenter.lagosweather.utils.LogUtils
 import com.devcenter.lagosweather.utils.UiUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_weather.*
+import retrofit2.Converter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -104,13 +107,14 @@ class WeatherFragment : Fragment() {
         tempDescription.text = weathers.weather[0].description.substring(0, 1).toUpperCase() +
                 weathers.weather[0].description.substring(1)
         windSpeed.text = "Wind Speed: " + weathers.wind.speed.toString() + " m/s"
-        temperature.text = getTemperatureInCelcius(weathers.main.temp).toString()
+        temperature.text = ConverterUtil.getTemperatureInCelcius(weathers.main.temp).toString()
         unitTV.text = Html.fromHtml("<sup><small>o</small></sup> C")
         date.text = currentDate()
         time.text = getCurrentTime()
 
         //Glide.with(activity!!).load(prepareIcon(weathers.weather[0].icon)).into(image)
 
+        LogUtils.log("Sunrise", weathers.sys.sunrise.toString())
         sunriseVal = unixToTime(weathers.sys.sunrise)
         sunsetVal = unixToTime(weathers.sys.sunset)
 
@@ -123,17 +127,16 @@ class WeatherFragment : Fragment() {
             // checkedId is the RadioButton selected
             if(group.checkedRadioButtonId != -1){
                 if(rb_celcius.isChecked){
-                    temperature.text = df.format(getTemperatureInCelcius(weathers.main.temp)).toString()
+                    temperature.text = df.format(ConverterUtil.getTemperatureInCelcius(weathers.main.temp)).toString()
                     unitTV.text = Html.fromHtml("<sup><small>o</small></sup> C")
                 }
                 if(rb_fahrenheit.isChecked){
-                    temperature.text =df.format(getTemperatureInFahrenheit(weathers.main.temp)).toString()
+                    temperature.text =df.format(ConverterUtil.getTemperatureInFahrenheit(weathers.main.temp)).toString()
                     unitTV.text = Html.fromHtml("<sup><small>o</small></sup> F")
                 }
                 if(rb_kelvin.isChecked){
                     temperature.text = df.format(weathers.main.temp).toString()
                     unitTV.text = Html.fromHtml("<sup><small>o</small></sup> k")
-
                 }
             }
         }
@@ -142,7 +145,7 @@ class WeatherFragment : Fragment() {
             // checkedId is the RadioButton selected
             if(group.checkedRadioButtonId != -1){
                 if(rb_mph.isChecked){
-                    windSpeed.text = "Wind Speed: " + getSpeedInmph(weathers.wind.speed).toString() + " mph"
+                    windSpeed.text = "Wind Speed: " + ConverterUtil.getSpeedInmph(weathers.wind.speed).toString() + " mph"
                 }
                 if(rb_ms.isChecked){
                     windSpeed.text = "Wind Speed: " + weathers.wind.speed.toString() + " m/s"
@@ -177,17 +180,7 @@ class WeatherFragment : Fragment() {
         return timeFormat.format(calendar.time)
     }
 
-    private fun getTemperatureInCelcius(temp: Double): Double {
-        return (temp - 273.15)
-    }
 
-    private fun getTemperatureInFahrenheit(temp: Double): Double {
-        return (temp - 457.87)
-    }
-
-    private fun getSpeedInmph(speed: Double): Double {
-        return (speed * 2.237)
-    }
 
     private fun prepareIcon(icon: String): String {
         return "http://openweathermap.org/img/w/$icon.png"
