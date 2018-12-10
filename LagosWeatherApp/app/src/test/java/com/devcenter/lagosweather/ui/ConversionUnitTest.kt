@@ -4,7 +4,7 @@ import com.devcenter.lagosweather.utils.ConverterUtil
 import org.junit.Assert.*
 import org.junit.Test
 
-class WeatherFragmentTest{
+class ConversionUnitTest{
 
     @Test
     fun testGetTemperatureInCelcius(){
